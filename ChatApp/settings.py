@@ -11,6 +11,9 @@ https://docs.djangoproject.com/en/2.2/ref/settings/
 """
 
 import os
+import dj_database_url
+from decouple import config
+from distutils.util import strtobool
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -20,12 +23,12 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # See https://docs.djangoproject.com/en/2.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = '%b-+nd*zg7djfk8e+dn7z10tt0l(6zzpkouaa)j5=%nv_)&2bc'
+SECRET_KEY = config('DJANGO_SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = strtobool(config('DJANGO_DEBUG'))
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = config('DJANGO_ALLOWED_HOSTS').split(',')
 
 
 # Application definition
@@ -37,6 +40,9 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+
+    # Third Party Packages
+    'rest_framework',  # utilities for rest apis
 ]
 
 MIDDLEWARE = [
@@ -67,17 +73,26 @@ TEMPLATES = [
     },
 ]
 
-WSGI_APPLICATION = 'ChatApp.wsgi.application'
+# Routing for Chat function
+ASGI_APPLICATION = "routing.application"
+
+
+# Channel Layer for Chat function
+CHANNEL_LAYERS = {
+    "default": {
+        "BACKEND": "channels.layers.InMemoryChannelLayer"
+   }
+}
 
 
 # Database
 # https://docs.djangoproject.com/en/2.2/ref/settings/#databases
-
+# Postgres
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
-    }
+    'default': dj_database_url.config(
+        default=config('DATABASE_URI'),
+        conn_max_age=int(config('POSTGRES_CONN_MAX_AGE', 600))
+    )
 }
 
 
