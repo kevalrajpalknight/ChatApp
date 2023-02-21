@@ -43,6 +43,7 @@ INSTALLED_APPS = [
 
     # Third Party Packages
     'rest_framework',  # utilities for rest apis
+    'channels',
 ]
 
 MIDDLEWARE = [
@@ -74,7 +75,7 @@ TEMPLATES = [
 ]
 
 # Routing for Chat function
-ASGI_APPLICATION = "routing.application"
+ASGI_APPLICATION = "ChatApp.asgi.application"
 
 
 # Channel Layer for Chat function
