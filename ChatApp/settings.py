@@ -44,6 +44,9 @@ INSTALLED_APPS = [
     # Third Party Packages
     'rest_framework',  # utilities for rest apis
     'channels',
+
+    # Project apps
+    'users.apps.UsersConfig',
 ]
 
 MIDDLEWARE = [
