@@ -44,7 +44,12 @@ INSTALLED_APPS = [
     # Third Party Packages
     'rest_framework',  # utilities for rest apis
     'channels',
+
+    # Project apps
+    'users.apps.UsersConfig',
 ]
+
+AUTH_USER_MODEL = 'users.User'
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
